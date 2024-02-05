@@ -1,0 +1,63 @@
+8 r1,3 f0,1.1,3.2 f2,1.2,3.1 # straight road
+1 r*,1,3 f0,1.1,3.2 f2,1.2,3.1 # straight road with inn
+9 r1,2 f0,3,1.1,2.2 f1.2,2.1 # curve road
+1 r*,1,2 f0,3,1.1,2.2 f1.2,2.1 # curve road with inn
+4 r1 r2 r3 f0,1.1,3.2 f1.2,2.1 f2.2,3.1 # 3-way road, unconnected
+1 r*,1 r2 r3 f0,1.1,3.2 f1.2,2.1 f2.2,3.1 # 3-way road, unconnected with inn
+1 r1,2,3 f0,1.1,3.2 f1.2,2.1 f2.2,3.1 # 3-way junction
+1 r0 r1 r2 r3 f0.2,1.1 f1.2,2.1 f2.2,3.1 f3.2,0.1 # 4-way unconnected junction
+1 r0,1,2,3 f0.2,1.1 f1.2,2.1 f2.2,3.1 f3.2,0.1 # 4-way junction
+1 r0,2 r1,3 f0.2,1.1 f1.2,2.1 f2.2,3.1 f3.2,0.1 # Crossroads
+1 r3,0 r1,2 f1.2,2.1 f0.2,1.1,2.2,3.1 f3.2,0.1 # 2 curved roads
+1 r0 f1,2,3,0.1,0.2 # Road dead-end
+
+3 c3,0,1 f2 # 3-side city
+1 c*,3,0,1 f2 # 3-side city w/ shield
+2 r2 c*,3,0,1 f2.1 f2.2 # 3-side city w/ shield & road
+1 r2 c3,0,1 f2.1 f2.2 # 3-side city w/ road
+
+3 c0,1 f2,3 # Triangle 2-side city
+2 c*,0,1 f2,3 # Triangle 2-side city w/ shield
+1 r2,[0] c0,1 f2.1 f2.2,3 # Triangle 2-side city w/ road
+3 c0,1 f2.1,3.2 f2.2,3.1,[] r2,3 # Triangle 2-side city w/ curve road
+2 c*,0,1 f2.1,3.2 f2.2,3.1,[] r2,3 # Triangle 2-side city w/ curve road & shield
+1 c*,0,1 f2.1,3.2 f2.2,3.1,[] r*,2,3 # Triangle 2-side city w/ curve road, shield & inn
+1 r*,3,[1] c0,1 f2,3.1 f3.2 # Triangle 2-side city w/ road & inn
+
+1 c*,0,1 f2 c3 # 2 cities, one triangle with shield
+
+5 c0 f1,2,3 # 1-side city
+3 c0 r2,3 f2.2,3.1,[] f1,2.1,3.2 # 1-side city w/ road b-l
+1 c0 r*,2,3 f2.2,3.1,[] f1,2.1,3.2 # 1-side city w/ road b-l & inn
+3 c0 r1,2 f1.2,2.1,[] f3,1.1,3.2,2.2 # 1-side city w/ road b-r
+3 c0 r1,3 f1.1,3.2,[] f1.2,2,3.1 # 1-side city w/ road r-l
+1 c0 r2,3 f3.2 f2.2,3.1,[] f1,2.1 # 1-side city w/ road b-l that seperates the fields !!!
+1 c0 r1,2 f1.1 f1.2,2.1,[] f2.2,3 # 1-side city w/ road b-r that seperates the fields !!!
+3 c0 r1 r2 r3 f1.1,3.2 f1.2,2.1,[] f2.2,3.1,[] # city with 3-way road, unconnected
+1 r2,[0] r1,3 f1.1 f1.2,2.1,[] f2.2,3.1,[] f3.2 c0 # city with crossroads
+1 r3,[0] f1,2,3.1 f3.2 c0 # city w/ road t-l
+1 r1,[0] f2,3,1.2 f1.1 c0 # city w/ road t-r
+1 r2,[0] f1,2.1 f3,2.2 c0 # city w/ road t-b
+1 c0 f1 f2 f3 # spiky one way city with 3 fields
+1 c0 f1 f2,3 # witch's hat one way city with 2 fields
+
+3 c0 c2 f1,3 # 2 opposite cities
+3 c0 c2 r1 r3 f1.1,[0] f1.2,[2] f3.1,[2] f3.2,[0] # 2 opposite cities with unconnected roads !!!
+3 c0 c3 f1,2 # 2 adjacent cities
+3 r2,[3] r1,[0] f1.1,[0] f1.2,2.1 f2.2,[3] c0 c3 # 2 adjacent cities with roads
+
+1 c1,3 f0 f2 # Long city
+2 c*,1,3 f0 f2 # Long city with shield
+1 f0.1 f0.2 f2.1 f2.2 r0 r2 c*,1,3 # Long city with shield & roads
+1 c*,1,3 f0.1 f0.2 f2.1 f2.2 r0,2 # Long city with through road & shield
+
+1 c0 c1 c3 f2 # 3 cities
+
+1 c*,*,0,1,2,3 # 4 side city with 2 shields
+1 c*,0,1,2,3 # 4 side city with shield
+
+4 m f0,1,2,3 # Monastery
+2 m f0,1,2.1,2.2,3 r2 # Monastery with road
+1 m f0,1.1,3.2 f1.2,2,3.1 r1 r3 # Monastery with 2 roads
+1 m f0,1.1,3.2 f1.2,2.1 f2.2,3.1 r1 r2 r3 # Monastery with 3 roads
+1 m f0.2,1.1 f1.2,2.1 f2.2,3.1 f3.2,0.1 r0 r1 r2 r3 # Monastery with 4 roads
