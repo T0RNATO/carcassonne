@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import {Location, PieceObj, PlacedPieceObj} from "@/external/game_objects"
-import {generateTiles, vPan, wasAnActualClick} from "@/external/utils";
+import {generateTiles} from "@/external/utils";
 import Piece from "@/components/Piece.vue";
 import type {Ref} from "vue";
 import {ref} from "vue";
 import PlacedPiece from "@/components/PlacedPiece.vue";
 import ValidLocation from "@/components/ValidLocation.vue";
 import FilterDefs from "@/components/FilterDefs.vue";
+import Pan from "@/components/Pan.vue";
 
 const props = defineProps<{
     ws: WebSocket,
@@ -94,10 +95,10 @@ function placeTile(loc: Location, rot: number) {
 
 <template>
     <FilterDefs/>
-    <div class="main" v-pan>
+    <Pan>
         <PlacedPiece :piece="piece" v-for="(piece, i) in board" :key="i"/>
         <ValidLocation :loc="loc" :piece="currentTile" v-for="(loc, i) in validLocations" :key="i" @clicked="placeTile"/>
-    </div>
+    </Pan>
     <div class="absolute bottom-0 right-0 p-4 rounded-tl-md bg-gray-700">
         Current Piece:
         <Piece :piece="currentTile" v-if="currentTile"/>
@@ -111,7 +112,5 @@ body {
 </style>
 
 <style scoped>
-.main {
-    @apply max-w-[90vw] flex flex-wrap will-change-transform;
-}
+
 </style>

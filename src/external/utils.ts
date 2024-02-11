@@ -1,34 +1,6 @@
 // @ts-ignore
 import tiles from "@/external/tiles.txt?raw";
-import createPanZoom from "panzoom";
 import {CitySector, FieldSector, PieceObj, RoadSector, Sector} from "./game_objects";
-
-export let wasAnActualClick: Promise<boolean>;
-
-// marginally scuff code to allow Vue's click handlers to work with panzoom
-export const vPan = {
-    mounted(el) {
-        let resolve: (value: boolean) => void;
-        let reject: (value: boolean) => void;
-        function resetPromise() {
-            wasAnActualClick = new Promise((res, rej) => {
-                resolve = res;
-                reject = rej;
-            })
-        }
-        resetPromise();
-        el.addEventListener("click", () => {
-            setTimeout(reject, 1000);
-        });
-        el.pz = createPanZoom(el, {onClick(){
-            resolve(true);
-            resetPromise();
-        }});
-    },
-    beforeUnmount(el) {
-        el.pz.dispose();
-    }
-}
 
 // @ts-ignore
 export const range = (n: number) => [...Array(n).keys()]
