@@ -1,18 +1,24 @@
 <script setup>
 import {CitySector} from "@/external/game_objects.ts";
 import {range} from "@/external/utils.ts";
-import Tooltip from "@/components/Tooltip.vue";
+import {useStore} from "@/external/store.ts";
 
 defineProps({
     sector: CitySector
 })
+
+const store = useStore()
 
 const fill = "#e8a66f";
 const stroke = "rgb(169,115,69)";
 </script>
 
 <template>
-    <g :fill="fill" :stroke="stroke" stroke-width="3" :transform="`rotate(${sector.sides[0] * 90} 50 50)`" filter="url(#city)">
+    <g :fill="store.hoveredSectors.includes(sector.uid) ? 'blue' : fill" :stroke="stroke"
+       stroke-width="3" :transform="`rotate(${sector.sides[0] * 90} 50 50)`"
+       filter="url(#city)"
+       @mouseover="console.log('test')"
+    >
         <!--City on just one side-->
         <ellipse rx="50" ry="30" cx="50" cy="0" v-if="sector.sides.length === 1"/>
         <!--City on two adjacent sides-->
@@ -24,11 +30,10 @@ const stroke = "rgb(169,115,69)";
         <!--Entire city piece-->
         <rect width="120" height="120" x="-10" y="-10" stroke="none" v-else/>
     </g>
-    <!-- Shields (or stars since that's simpler to render) -->
+    <!-- Shields -->
     <g :transform="`rotate(${sector.sides[0] * 90} 50 50)`">
-        <Tooltip tip="hello">
-            <path d="m6,24 7-23 7,23 L1,10 h24 L6,24" v-for="i in range(sector.shields)" fill="yellow" :transform="`translate(${77 - i * 20},3) scale(0.8)`" class="peer"/>
-        </Tooltip>
+<!--        <path d="m6,24 7-23 7,23 L1,10 h24 L6,24" v-for="i in range(sector.shields)" fill="yellow" :transform="`translate(${77 - i * 20},3) scale(0.8)`"/>-->
+        <path d="M10,0Q13,4 20,0Q15,18 10,20Q5,18 0,0Q7,4 10,0" v-for="i in range(sector.shields)" fill="#54a6d6" stroke="white" :transform="`translate(${77 - i * 20},3) scale(0.8)`"/>
     </g>
 </template>
 

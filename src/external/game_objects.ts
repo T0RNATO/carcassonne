@@ -37,10 +37,13 @@ type Meeples = {
     black: number
 }
 
+let sectorCount = 0;
+
 export class Sector {
     meeples: Meeples;
     type: "city" | "field" | "road";
     sides: Array<number>;
+    uid: number;
     constructor(sides: number[]) {
         this.sides = sides;
         this.meeples = {
@@ -50,6 +53,8 @@ export class Sector {
             yellow: 0,
             black: 0
         };
+        this.uid = sectorCount;
+        sectorCount++;
     }
 }
 

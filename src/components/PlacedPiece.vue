@@ -12,11 +12,13 @@ defineProps({
         left: `${(piece.x + 5) * 100}px`,
         top: `${(piece.y + 3) * 100}px`,
         transform: `rotate(${piece.rotation * -90}deg)`,
-    }" class="absolute">
+    }" class="absolute test">
         <Piece :piece="piece"/>
     </div>
 </template>
 
-<style scoped>
-
+<style>
+.test *:hover {
+    fill: cornflowerblue;
+}
 </style>

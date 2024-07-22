@@ -8,6 +8,7 @@ import PlacedPiece from "@/components/PlacedPiece.vue";
 import ValidLocation from "@/components/ValidLocation.vue";
 import FilterDefs from "@/components/FilterDefs.vue";
 import Pan from "@/components/Pan.vue";
+import {useStore} from "@/external/store";
 
 const props = defineProps<{
     ws: WebSocket,
@@ -26,21 +27,26 @@ function pp(id, x, y) {
     return new PlacedPieceObj(tile_bag.find(tile => tile.id === id), 0, x, y);
 }
 
+interface st {
+    board: PlacedPieceObj[]
+}
+
+const store = useStore() as st;
+
 const tile_bag: Array<PieceObj> = generateTiles();
-const board: Ref<Array<PlacedPieceObj>> = ref([pp(4,0,0),pp(4,1,-1),pp(0,-1,-1),pp(13,-1,-2)]);
 const currentTile: Ref<PieceObj> = ref();
 // to be removed
-currentTile.value = tile_bag.find(tile => tile.id === 51);
+currentTile.value = tile_bag.find(tile => tile.id === 61);
 
 function validRotationsForTileToBePlacedAtLocation(tile: PieceObj, x: number, y: number): Array<number> {
-    if (board.value.find(piece => piece.x === x && piece.y === y)) {
+    if (store.board.find(piece => piece.x === x && piece.y === y)) {
         return [];
     }
 
-    const bottom = board.value.find(piece => piece.x === x && piece.y === y + 1);
-    const top = board.value.find(piece => piece.x === x && piece.y === y - 1);
-    const left = board.value.find(piece => piece.x === x - 1 && piece.y === y);
-    const right = board.value.find(piece => piece.x === x + 1 && piece.y === y);
+    const bottom = store.board.find(piece => piece.x === x && piece.y === y + 1);
+    const top = store.board.find(piece => piece.x === x && piece.y === y - 1);
+    const left = store.board.find(piece => piece.x === x - 1 && piece.y === y);
+    const right = store.board.find(piece => piece.x === x + 1 && piece.y === y);
 
     const validRotations = [];
 
@@ -61,7 +67,7 @@ function updateValidLocationsOfTile(tile: PieceObj) {
     const scanned: string[] = [];
     const vLocations = [];
 
-    for (const piece of board.value) {
+    for (const piece of store.board) {
         const x = piece.x;
         const y = piece.y;
 
@@ -81,22 +87,19 @@ function updateValidLocationsOfTile(tile: PieceObj) {
 updateValidLocationsOfTile(currentTile.value);
 
 function placeTile(loc: Location, rot: number) {
-    // ignore this massive hack
-    wasAnActualClick.then(() => {
-        const rotation = loc.rotations[rot];
-        board.value.push(new PlacedPieceObj(currentTile.value, rotation, loc.x, loc.y));
-        tile_bag.splice(tile_bag.indexOf(currentTile.value), 1);
-        // remove
-        currentTile.value = tile_bag[Math.floor(Math.random() * tile_bag.length)];
-        updateValidLocationsOfTile(currentTile.value);
-    },()=>{});
+    const rotation = loc.rotations[rot];
+    store.board.push(new PlacedPieceObj(currentTile.value, rotation, loc.x, loc.y));
+    tile_bag.splice(tile_bag.indexOf(currentTile.value), 1);
+    // remove
+    currentTile.value = tile_bag[Math.floor(Math.random() * tile_bag.length)];
+    updateValidLocationsOfTile(currentTile.value);
 }
 </script>
 
 <template>
     <FilterDefs/>
-    <Pan>
-        <PlacedPiece :piece="piece" v-for="(piece, i) in board" :key="i"/>
+    <Pan @click-event="console.log($event)">
+        <PlacedPiece :piece="piece" v-for="(piece, i) in store.board" :key="i"/>
         <ValidLocation :loc="loc" :piece="currentTile" v-for="(loc, i) in validLocations" :key="i" @clicked="placeTile"/>
     </Pan>
     <div class="absolute bottom-0 right-0 p-4 rounded-tl-md bg-gray-700">

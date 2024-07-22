@@ -47,6 +47,10 @@ export function generateTiles() {
         const content = line.split(" #")[0];
         const [count, ...sections] = content.split(" ");
 
+        if (id === 61) {
+            console.log(sections)
+        }
+
         const features: Array<Sector> = [];
 
         for (const feature of sections) {
@@ -57,7 +61,7 @@ export function generateTiles() {
         }
 
         for (let i = 0; i < parseInt(count); i++){
-            tile_bag.push(new PieceObj(features, id, sections[1] === "m"));
+            tile_bag.push(new PieceObj(features, id, sections[0] === "m"));
         }
     }
     return tile_bag

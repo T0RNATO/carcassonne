@@ -2,6 +2,7 @@
 import {Location, PieceObj} from "@/external/game_objects";
 import Piece from "@/components/Piece.vue";
 import {ref, watch} from "vue";
+import DetectClick from "@/components/DetectClick.vue";
 
 const props = defineProps<{
     loc: Location,
@@ -29,16 +30,18 @@ function mouseout() {removeEventListener('keydown', detectKeys)}
 </script>
 
 <template>
-    <div :style="{
-        left: `${(loc.x + 5) * 100}px`,
-        top: `${(loc.y + 3) * 100}px`,
-    }" class="loc" @click="$emit('clicked', loc, currentRot)">
-        <div class="val"></div>
-        <Piece :piece="piece" :style="{transform: `rotate(${loc.rotations[currentRot] * -90}deg)`}" class="hidden opacity-10"
-                @mouseover="mouseover"
-                @mouseout="mouseout"
-        />
-    </div>
+    <DetectClick @clicked="$emit('clicked', loc, currentRot)">
+        <div :style="{
+            left: `${(loc.x + 5) * 100}px`,
+            top: `${(loc.y + 3) * 100}px`,
+        }" class="loc">
+            <div class="val"></div>
+            <Piece :piece="piece" :style="{transform: `rotate(${loc.rotations[currentRot] * -90}deg)`}" class="hidden opacity-10"
+                   @mouseover="mouseover"
+                   @mouseout="mouseout"
+            />
+        </div>
+    </DetectClick>
 </template>
 
 <style scoped>

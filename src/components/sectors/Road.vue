@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {RoadSector} from "@/external/game_objects.js";
 import {computed} from "vue";
+import {range} from "@/external/utils";
 
 const props = defineProps<{
     sector: RoadSector
@@ -37,6 +38,9 @@ const sides = computed(() => {
         <path d="M55,0 Q55,45 100,45 H110 V55 H100 Q55,55 55,100 V110 H45 V-10 H55 V0 M55,25 V75 Q55,50 80,50 Q55,50 55,25" v-else-if="num_sides === 3"/>
         <!--Four way junction, like this will be used-->
         <path d="M55,0 Q55,45 100,45 H110 V55 H100 Q55,55 55,100 V110 H45 V100 Q45,55 0,55 H-10 V45 H0 Q45,45 45,0 V-10 H55 V0 M50,25 Q50,50 25,50 Q50,50 50,75 Q50,50 75,50 Q50,50 50,25" v-else/>
+    </g>
+    <g :transform="`rotate(${sector.sides[0] * 90} 50 50)`">
+        <path d="m6,24 7-23 7,23 L1,10 h24 L6,24" v-if="sector.inn" fill="yellow" :transform="`translate(77,3) scale(0.8)`"/>
     </g>
 </template>
 
